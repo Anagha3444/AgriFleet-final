@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Login - AgriHaul{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Login to your AgriHaul account</p>
+        </div>
+        
+        <form method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-input" 
+                    placeholder="farmer@example.com"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="form-input" 
+                    placeholder="••••••••"
+                    required
+                >
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">
+                🔓 Login
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{{ url_for('auth.signup') }}" class="auth-link">Sign up here</a></p>
+        </div>
+        
+        <div class="test-credentials">
+            <h3>📝 Test Accounts:</h3>
+            <p><strong>Farmer:</strong> farmer@example.com / password123</p>
+            <p><strong>Driver:</strong> driver@example.com / password123</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

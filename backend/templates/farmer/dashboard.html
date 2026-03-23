@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Farmer Dashboard - AgriHaul{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>👋 Welcome, {{ current_user.full_name }}</h1>
+        <p>Your Agricultural Transportation Hub</p>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-content">
+                <h3>{{ stats.total_bookings }}</h3>
+                <p>Total Bookings</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-content">
+                <h3>{{ stats.pending }}</h3>
+                <p>Pending Bookings</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">🚛</div>
+            <div class="stat-content">
+                <h3>{{ stats.active }}</h3>
+                <p>Active Bookings</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">✓</div>
+            <div class="stat-content">
+                <h3>{{ stats.completed }}</h3>
+                <p>Completed</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <a href="{{ url_for('farmer.create_booking_page') }}" class="action-button btn-primary">
+            <span class="action-icon">➕</span>
+            <span>Create New Booking</span>
+        </a>
+        <a href="{{ url_for('farmer.bookings') }}" class="action-button btn-secondary">
+            <span class="action-icon">📋</span>
+            <span>View All Bookings</span>
+        </a>
+        <a href="{{ url_for('index') }}" class="action-button btn-secondary">
+            <span class="action-icon">❓</span>
+            <span>Help & Support</span>
+        </a>
+    </div>
+    
+    <!-- Recent Bookings -->
+    <div class="recent-section">
+        <h2>Recent Bookings</h2>
+        
+        {% if recent_bookings %}
+            <table class="bookings-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Goods</th>
+                        <th>Weight</th>
+                        <th>Fare</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                        <tr>
+                            <td>#{{ booking.id }}</td>
+                            <td>{{ booking.goods_type }}</td>
+                            <td>{{ booking.weight_kg }} kg</td>
+                            <td>₹{{ booking.estimated_fare }}</td>
+                            <td>
+                                <span class="status-badge status-{{ booking.status|lower }}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                            <td>{{ booking.created_at.strftime('%d/%m/%Y') }}</td>
+                            <td>
+                                <a href="{{ url_for('farmer.booking_details', booking_id=booking.id) }}" class="link-btn">View</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="empty-state">
+                <p>📭 No bookings yet</p>
+                <a href="{{ url_for('farmer.create_booking_page') }}" class="btn btn-primary">Create Your First Booking</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

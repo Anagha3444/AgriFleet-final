@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Details - AgriHaul{% endblock %}
+
+{% block content %}
+<div class="details-container">
+    <div class="details-header">
+        <h1>📦 Booking #{{ booking.id }}</h1>
+        <div class="status-banner">
+            <span class="status-badge status-{{ booking.status|lower }}">
+                {{ booking.status }}
+            </span>
+            <span class="booking-date">{{ booking.created_at.strftime('%d %B %Y, %H:%M') }}</span>
+        </div>
+    </div>
+    
+    <!-- Booking Details Cards -->
+    <div class="details-grid">
+        <!-- Goods Information -->
+        <div class="detail-card">
+            <h3>📦 Goods Information</h3>
+            <div class="detail-row">
+                <span class="label">Type:</span>
+                <span class="value">{{ booking.goods_type }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">Weight:</span>
+                <span class="value">{{ booking.weight_kg }} kg</span>
+            </div>
+        </div>
+        
+        <!-- Locations -->
+        <div class="detail-card">
+            <h3>📍 Locations</h3>
+            <div class="detail-row">
+                <span class="label">Pickup:</span>
+                <span class="value">
+                    {{ booking.pickup_latitude }}, {{ booking.pickup_longitude }}
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="label">Dropoff:</span>
+                <span class="value">
+                    {{ booking.dropoff_latitude }}, {{ booking.dropoff_longitude }}
+                </span>
+            </div>
+        </div>
+        
+        <!-- Pricing -->
+        <div class="detail-card">
+            <h3>💰 Pricing</h3>
+            <div class="detail-row">
+                <span class="label">Estimated Fare:</span>
+                <span class="value">₹{{ booking.estimated_fare }}</span>
+            </div>
+            {% if booking.final_fare %}
+                <div class="detail-row">
+                    <span class="label">Final Fare:</span>
+                    <span class="value">₹{{ booking.final_fare }}</span>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Driver Information (if accepted) -->
+        {% if booking.driver_id and driver %}
+            <div class="detail-card">
+                <h3>🚛 Driver Information</h3>
+                <div class="detail-row">
+                    <span class="label">Vehicle:</span>
+                    <span class="value">{{ driver.vehicle_type }} ({{ driver.vehicle_number }})</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Capacity:</span>
+                    <span class="value">{{ driver.capacity_kg }} kg</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Accepted At:</span>
+                    <span class="value">{{ booking.accepted_at.strftime('%d %B %Y, %H:%M') if booking.accepted_at else 'N/A' }}</span>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Timeline -->
+        <div class="detail-card">
+            <h3>⏱️ Timeline</h3>
+            <div class="timeline">
+                <div class="timeline-item completed">
+                    <div class="timeline-marker">✓</div>
+                    <div class="timeline-content">
+                        <p class="timeline-title">Booking Created</p>
+                        <p class="timeline-time">{{ booking.created_at.strftime('%d %B %Y, %H:%M') }}</p>
+                    </div>
+                </div>
+                
+                {% if booking.accepted_at %}
+                    <div class="timeline-item completed">
+                        <div class="timeline-marker">✓</div>
+                        <div class="timeline-content">
+                            <p class="timeline-title">Driver Accepted</p>
+                            <p class="timeline-time">{{ booking.accepted_at.strftime('%d %B %Y, %H:%M') }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="timeline-item">
+                        <div class="timeline-marker">⏳</div>
+                        <div class="timeline-content">
+                            <p class="timeline-title">Waiting for Driver</p>
+                            <p class="timeline-time">Pending...</p>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if booking.completed_at %}
+                    <div class="timeline-item completed">
+                        <div class="timeline-marker">✓</div>
+                        <div class="timeline-content">
+                            <p class="timeline-title">Delivery Completed</p>
+                            <p class="timeline-time">{{ booking.completed_at.strftime('%d %B %Y, %H:%M') }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="timeline-item">
+                        <div class="timeline-marker">⏳</div>
+                        <div class="timeline-content">
+                            <p class="timeline-title">In Transit / Pending</p>
+                            <p class="timeline-time">To be completed...</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Actions -->
+    <div class="actions-section">
+        {% if booking.status == 'PENDING' %}
+            <form method="POST" action="{{ url_for('farmer.cancel_booking_handler', booking_id=booking.id) }}" class="inline-form">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">
+                    ✕ Cancel Booking
+                </button>
+            </form>
+        {% endif %}
+        
+        <a href="{{ url_for('farmer.bookings') }}" class="btn btn-secondary">
+            ← Back to Bookings
+        </a>
+    </div>
+</div>
+
+<style>
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .timeline-item {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .timeline-marker {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+    
+    .timeline-item.completed .timeline-marker {
+        background: #4CAF50;
+        color: white;
+    }
+    
+    .timeline-content {
+        padding-top: 5px;
+    }
+    
+    .timeline-title {
+        margin: 0;
+        font-weight: bold;
+    }
+    
+    .timeline-time {
+        margin: 5px 0 0 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}

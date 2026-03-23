@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+{% block title %}Available Bookings - AgriHaul{% endblock %}
+{% block content %}
+<div class="list-container">
+    <div class="list-header">
+        <h1>🔍 Available Bookings</h1>
+        <p style="color: #666; margin-top: 10px;">Your Vehicle: <strong>{{ driver.vehicle_number }}</strong> | Capacity: <strong>{{ driver.capacity_kg }} kg</strong></p>
+    </div>
+    
+    {% if bookings %}
+        <div class="bookings-grid">
+            {% for booking in bookings %}
+                <div class="booking-card">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3>📦 {{ booking.goods_type }}</h3>
+                            <span class="booking-id">#{{ booking.id }}</span>
+                        </div>
+                        <span class="status-badge status-pending">PENDING</span>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="card-content">
+                        <div class="info-row">
+                            <span class="info-label">⚖️ Weight</span>
+                            <span class="info-value">{{ booking.weight_kg }} kg</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="info-label">💰 Fare</span>
+                            <span class="info-value fare-amount">₹{{ booking.estimated_fare }}</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="info-label">📅 Posted</span>
+                            <span class="info-value">{{ booking.created_at.strftime('%d %b %Y') }}</span>
+                        </div>
+                        
+                        <div class="location-box">
+                            <p><strong>📍 From:</strong> {{ booking.pickup_latitude }}, {{ booking.pickup_longitude }}</p>
+                            <p><strong>📍 To:</strong> {{ booking.dropoff_latitude }}, {{ booking.dropoff_longitude }}</p>
+                        </div>
+                        
+                        {% if booking.weight_kg > driver.capacity_kg %}
+                            <div class="warning-alert">
+                                <strong>⚠️ Exceeds Capacity!</strong> This load is too heavy for your vehicle.
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="card-footer">
+                        <a href="{{ url_for('driver.booking_details', booking_id=booking.id) }}" class="btn btn-secondary btn-sm">View Details</a>
+                        {% if booking.weight_kg <= driver.capacity_kg %}
+                            <form method="POST" action="{{ url_for('driver.accept_booking_handler', booking_id=booking.id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-primary btn-sm">Accept Booking</button>
+                            </form>
+                        {% else %}
+                            <button class="btn btn-disabled btn-sm" disabled>Cannot Accept</button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h2>No Available Bookings</h2>
+            <p>There are currently no available bookings in your area.</p>
+            <p style="color: #999; font-size: 0.9em;">Check back later for new bookings!</p>
+            <a href="{{ url_for('driver.dashboard') }}" class="btn btn-primary" style="margin-top: 20px;">Back to Dashboard</a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .list-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0;
+    }
+    
+    .list-header {
+        background: linear-gradient(135deg, #2196F3, #4CAF50);
+        color: white;
+        padding: 40px 30px;
+        border-radius: 8px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+    }
+    
+    .list-header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        color: white;
+    }
+    
+    .list-header p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1em;
+    }
+    
+    /* Bookings Grid */
+    .bookings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    
+    /* Card Styling */
+    .booking-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border-left: 5px solid #4CAF50;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .booking-card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }
+    
+    /* Card Header */
+    .card-header {
+        background: linear-gradient(135deg, #f5f5f5, #eeeeee);
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .card-title {
+        flex: 1;
+    }
+    
+    .card-title h3 {
+        margin: 0 0 5px 0;
+        color: #333;
+        font-size: 1.4em;
+    }
+    
+    .booking-id {
+        color: #2196F3;
+        font-weight: bold;
+        font-size: 0.9em;
+    }
+    
+    /* Card Content */
+    .card-content {
+        padding: 20px;
+        flex: 1;
+    }
+    
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .info-row:last-of-type {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.95em;
+    }
+    
+    .info-value {
+        color: #333;
+        font-weight: 500;
+        text-align: right;
+    }
+    
+    .fare-amount {
+        color: #FF9800;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    
+    /* Location Box */
+    .location-box {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 3px solid #2196F3;
+        font-size: 0.9em;
+    }
+    
+    .location-box p {
+        margin: 8px 0;
+        color: #555;
+    }
+    
+    /* Warning Alert */
+    .warning-alert {
+        background: #FFF3CD;
+        border: 1px solid #FFE082;
+        color: #856404;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+        font-size: 0.9em;
+    }
+    
+    /* Card Footer */
+    .card-footer {
+        padding: 15px 20px;
+        background: #fafafa;
+        display: flex;
+        gap: 10px;
+        border-top: 1px solid #eee;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.9em;
+    }
+    
+    .btn-sm {
+        padding: 8px 14px;
+        font-size: 0.85em;
+    }
+    
+    .btn-primary {
+        background: #2196F3;
+        color: white;
+        flex: 1;
+    }
+    
+    .btn-primary:hover {
+        background: #1976D2;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    }
+    
+    .btn-secondary {
+        background: #f0f0f0;
+        color: #333;
+        flex: 1;
+    }
+    
+    .btn-secondary:hover {
+        background: #e0e0e0;
+    }
+    
+    .btn-disabled {
+        background: #ccc;
+        color: #999;
+        cursor: not-allowed;
+        opacity: 0.6;
+        flex: 1;
+    }
+    
+    /* Status Badge */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+    
+    .status-pending {
+        background: #FFC107;
+        color: white;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 40px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .empty-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state h2 {
+        color: #666;
+        margin-bottom: 10px;
+    }
+    
+    .empty-state p {
+        color: #999;
+        margin: 5px 0;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .bookings-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .list-header h1 {
+            font-size: 1.8em;
+        }
+        
+        .card-footer {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

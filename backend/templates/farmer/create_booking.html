@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Create Booking - AgriHaul{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <h1> Create New Booking</h1>
+        <p class="form-description">Enter pickup and dropoff locations to create a transportation booking</p>
+        
+        <form method="POST" class="booking-form">
+            <!-- Location Section -->
+            <fieldset class="form-section">
+                <legend> Pickup Location</legend>
+                
+                <div class="location-display-box">
+                    <strong> Location Name: </strong>
+                    <span id="pickup_location_name" style="color: #2196F3; font-weight: bold;">Loading...</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Latitude</label>
+                    <input 
+                        type="number" 
+                        step="0.0001"
+                        name="pickup_lat" 
+                        class="form-input" 
+                        placeholder="19.0760"
+                        value="19.0760"
+                        required
+                        id="pickup_lat_input"
+                        onchange="updateLocationDisplay('pickup', parseFloat(this.value), parseFloat(document.getElementById('pickup_lon_input').value)); calculateFareEstimate();"
+                        onblur="updateLocationDisplay('pickup', parseFloat(this.value), parseFloat(document.getElementById('pickup_lon_input').value))"
+                    >
+                    <small>Example: 19.0760 for Mumbai</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Longitude</label>
+                    <input 
+                        type="number" 
+                        step="0.0001"
+                        name="pickup_lon" 
+                        class="form-input" 
+                        placeholder="72.8777"
+                        value="72.8777"
+                        required
+                        id="pickup_lon_input"
+                        onchange="updateLocationDisplay('pickup', parseFloat(document.getElementById('pickup_lat_input').value), parseFloat(this.value)); calculateFareEstimate();"
+                        onblur="updateLocationDisplay('pickup', parseFloat(document.getElementById('pickup_lat_input').value), parseFloat(this.value))"
+                    >
+                    <small>Example: 72.8777 for Mumbai</small>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <legend> Dropoff Location</legend>
+                
+                <div class="location-display-box">
+                    <strong> Location Name: </strong>
+                    <span id="dropoff_location_name" style="color: #2196F3; font-weight: bold;">Loading...</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Latitude</label>
+                    <input 
+                        type="number" 
+                        step="0.0001"
+                        name="dropoff_lat" 
+                        class="form-input" 
+                        placeholder="19.1136"
+                        value="19.1136"
+                        required
+                        id="dropoff_lat_input"
+                        onchange="updateLocationDisplay('dropoff', parseFloat(this.value), parseFloat(document.getElementById('dropoff_lon_input').value)); calculateFareEstimate();"
+                        onblur="updateLocationDisplay('dropoff', parseFloat(this.value), parseFloat(document.getElementById('dropoff_lon_input').value))"
+                    >
+                    <small>Example: 19.1136</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Longitude</label>
+                    <input 
+                        type="number" 
+                        step="0.0001"
+                        name="dropoff_lon" 
+                        class="form-input" 
+                        placeholder="72.8697"
+                        value="72.8697"
+                        required
+                        id="dropoff_lon_input"
+                        onchange="updateLocationDisplay('dropoff', parseFloat(document.getElementById('dropoff_lat_input').value), parseFloat(this.value)); calculateFareEstimate();"
+                        onblur="updateLocationDisplay('dropoff', parseFloat(document.getElementById('dropoff_lat_input').value), parseFloat(this.value))"
+                    >
+                    <small>Example: 72.8697</small>
+                </div>
+            </fieldset>
+            
+            <!-- Goods Section -->
+            <fieldset class="form-section">
+                <legend> Goods Details</legend>
+                
+                <div class="form-group">
+                    <label class="form-label">Type of Goods</label>
+                    <select name="goods_type" class="form-input" required>
+                        <option value="">-- Select Goods Type --</option>
+                        <option value="Rice">Rice</option>
+                        <option value="Wheat"> Wheat</option>
+                        <option value="Vegetables"> Vegetables</option>
+                        <option value="Fruits"> Fruits</option>
+                        <option value="Sugar"> Sugar</option>
+                        <option value="Cotton"> Cotton</option>
+                        <option value="Other"> Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Weight (in kg)</label>
+                    <input 
+                        type="number" 
+                        name="weight_kg" 
+                        class="form-input" 
+                        placeholder="1000"
+                        min="1"
+                        value="500"
+                        required
+                        id="weight_input"
+                        onchange="calculateFareEstimate()"
+                    >
+                    <small>Minimum: 1 kg</small>
+                </div>
+            </fieldset>
+            
+            <!-- Price Estimate Section -->
+            <div class="fare-estimate-card" id="fare_estimate_card" style="display: none;">
+                <h3> Estimated Fare</h3>
+                <div class="fare-breakdown">
+                    <div class="fare-row">
+                        <span>Base Fare:</span>
+                        <span id="base_fare">₹100</span>
+                    </div>
+                    <div class="fare-row">
+                        <span>Distance Charge:</span>
+                        <span id="distance_charge">₹0</span>
+                    </div>
+                    <div class="fare-row">
+                        <span>Weight Charge:</span>
+                        <span id="weight_charge">₹0</span>
+                    </div>
+                    <div class="fare-row fare-total">
+                        <span>Total Fare:</span>
+                        <span id="total_fare">₹100</span>
+                    </div>
+                </div>
+                <small id="distance_km_display">Distance: Calculating...</small>
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-full btn-lg">
+                ✓ Create Booking
+            </button>
+        </form>
+    </div>
+    
+    <!-- Info Card -->
+    <div class="info-card">
+        <h3> How to Use</h3>
+        <ol>
+            <li>Enter pickup latitude and longitude</li>
+            <li>Enter dropoff latitude and longitude</li>
+            <li>Location names will show automatically</li>
+            <li>Select the type of goods</li>
+            <li>Enter the total weight in kilograms</li>
+            <li>Fare will calculate automatically</li>
+            <li>Click "Create Booking" to submit</li>
+        </ol>
+        
+        <h3> Popular Coordinates</h3>
+        <p><strong>Mumbai:</strong> 19.0760, 72.8777</p>
+        <p><strong>Pune:</strong> 18.5204, 73.8567</p>
+        <p><strong>Bangalore:</strong> 12.9716, 77.5946</p>
+        <p><strong>Delhi:</strong> 28.7041, 77.1025</p>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+<script>
+    // Initialize on page load
+    window.addEventListener('load', function() {
+        initializeLocationDisplay();
+        calculateFareEstimate();
+    });
+    
+    function calculateFareEstimate() {
+        const pickupLat = parseFloat(document.querySelector('input[name="pickup_lat"]').value);
+        const pickupLon = parseFloat(document.querySelector('input[name="pickup_lon"]').value);
+        const dropoffLat = parseFloat(document.querySelector('input[name="dropoff_lat"]').value);
+        const dropoffLon = parseFloat(document.querySelector('input[name="dropoff_lon"]').value);
+        const weightKg = parseInt(document.querySelector('input[name="weight_kg"]').value) || 0;
+        
+        // Calculate distance using Haversine formula (client-side)
+        const distance = haversineDistance(pickupLat, pickupLon, dropoffLat, dropoffLon);
+        
+        // Calculate fare
+        const fare = calculateFare(distance, weightKg);
+        
+        // Update display
+        updateFareEstimate(fare);
+    }
+    
+    // Haversine formula for distance calculation
+    function haversineDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Earth's radius in km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = 
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+</script>
+{% endblock %}

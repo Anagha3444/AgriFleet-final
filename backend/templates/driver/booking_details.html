@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Booking Details - AgriHaul{% endblock %}
+{% block content %}
+<div class="details-container" style="max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <div style="background: linear-gradient(135deg, #2196F3, #4CAF50); color: white; padding: 25px; border-radius: 8px; margin-bottom: 30px;">
+        <h1 style="margin: 0; color: white;">?? Booking #{{ booking.id }}</h1>
+        <p style="margin: 5px 0 0 0; opacity: 0.9;">{{ booking.status }}</p>
+    </div>
+    
+    <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin-top: 0;">?? Goods Information</h3>
+        <p><strong>Type:</strong> {{ booking.goods_type }}</p>
+        <p><strong>Weight:</strong> {{ booking.weight_kg }} kg</p>
+    </div>
+    
+    <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin-top: 0;">?? Locations</h3>
+        <p><strong>Pickup:</strong><br>{{ booking.pickup_latitude }}, {{ booking.pickup_longitude }}</p>
+        <p><strong>Dropoff:</strong><br>{{ booking.dropoff_latitude }}, {{ booking.dropoff_longitude }}</p>
+    </div>
+    
+    <div style="background: #fff8f0; padding: 20px; border-radius: 8px; border-left: 4px solid #FF9800; margin-bottom: 20px;">
+        <h3 style="margin-top: 0; color: #FF9800;">?? Pricing</h3>
+        <p><strong>Estimated Fare:</strong> <span style="font-size: 1.3em; color: #FF9800; font-weight: bold;">?{{ booking.estimated_fare }}</span></p>
+    </div>
+    
+    <div style="display: flex; gap: 10px; margin-top: 30px;">
+        {% if booking.status == 'PENDING' %}
+            <form method="POST" action="{{ url_for('driver.accept_booking_handler', booking_id=booking.id) }}" style="flex: 1;">
+                <button type="submit" class="btn" style="width: 100%; background: #2196F3; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">? Accept Booking</button>
+            </form>
+        {% elif booking.status == 'ACCEPTED' %}
+            <form method="POST" action="{{ url_for('driver.complete_booking_handler', booking_id=booking.id) }}" style="flex: 1;">
+                <button type="submit" class="btn" style="width: 100%; background: #4CAF50; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">? Complete Delivery</button>
+            </form>
+        {% endif %}
+        
+        <a href="{{ url_for('driver.available_bookings') }}" class="btn" style="flex: 1; background: #f0f0f0; color: #333; padding: 12px; border: none; border-radius: 6px; font-weight: bold; text-align: center; text-decoration: none; cursor: pointer;">? Back</a>
+    </div>
+</div>
+{% endblock %}

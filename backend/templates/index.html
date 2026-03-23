@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Home - AgriFleet{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">🚚 AgriFleet</h1>
+        <p class="hero-subtitle">Connect Farmers with Drivers</p>
+        <p class="hero-description">
+            Transport agricultural goods efficiently from farms to markets
+        </p>
+        
+        {% if not current_user %}
+            <div class="hero-buttons">
+                <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-lg">Get Started</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-lg">Login</a>
+            </div>
+        {% else %}
+            <div class="hero-buttons">
+                {% if current_user.is_farmer() %}
+                    <a href="{{ url_for('farmer.dashboard') }}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+                    <a href="{{ url_for('farmer.create_booking_page') }}" class="btn btn-secondary btn-lg">Create Booking</a>
+                {% elif current_user.is_driver() %}
+                    <a href="{{ url_for('driver.dashboard') }}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+                    <a href="{{ url_for('driver.available_bookings') }}" class="btn btn-secondary btn-lg">View Bookings</a>
+                {% else %}
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">Admin Dashboard</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="features-section">
+    <h2>Why Choose AgriFleet?</h2>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">📍</div>
+            <h3>Easy Booking</h3>
+            <p>Book transportation in minutes with real-time pricing</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>Verified Drivers</h3>
+            <p>Connect with reliable and experienced drivers</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h3>Fair Pricing</h3>
+            <p>Transparent pricing based on distance and weight</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Track Everything</h3>
+            <p>Real-time booking status and history</p>
+        </div>
+    </div>
+</div>
+
+<div class="how-it-works">
+    <h2>How It Works</h2>
+    
+    <div class="steps-container">
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>Sign Up</h3>
+            <p>Create account as Farmer or Driver</p>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Create/Browse</h3>
+            <p>Farmers post bookings, Drivers browse available</p>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Accept & Complete</h3>
+            <p>Driver accepts booking and completes delivery</p>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <h3>Rate & Earn</h3>
+            <p>Rate each other and build reputation</p>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <h2>Ready to Get Started?</h2>
+    <p>Join hundreds of farmers and drivers already using AgriFleet</p>
+    {% if not current_user %}
+        <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-lg">Sign Up Now</a>
+    {% endif %}
+</div>
+{% endblock %}

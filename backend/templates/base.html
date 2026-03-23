@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AgriFleet - Agricultural Transport{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <a href="{{ url_for('index') }}" class="brand-logo">
+                    <span class="brand-icon">🚚</span>
+                    <span class="brand-text">AgriFleet</span>
+                </a>
+            </div>
+            
+            <ul class="navbar-menu">
+                {% if current_user %}
+                    <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+                    
+                    {% if current_user.is_farmer() %}
+                        <li><a href="{{ url_for('farmer.dashboard') }}" class="nav-link">Dashboard</a></li>
+                        <li><a href="{{ url_for('farmer.create_booking_page') }}" class="nav-link">New Booking</a></li>
+                        <li><a href="{{ url_for('farmer.bookings') }}" class="nav-link">My Bookings</a></li>
+                    {% elif current_user.is_driver() %}
+                        <li><a href="{{ url_for('driver.dashboard') }}" class="nav-link">Dashboard</a></li>
+                        <li><a href="{{ url_for('driver.available_bookings') }}" class="nav-link">Available Bookings</a></li>
+                        <li><a href="{{ url_for('driver.bookings') }}" class="nav-link">My Bookings</a></li>
+                    {% elif current_user.is_admin() %}
+                        <li><a href="{{ url_for('index') }}" class="nav-link">Admin</a></li>
+                    {% endif %}
+                    
+                    <li class="nav-user-menu">
+                        <span class="nav-user-name">👤 {{ current_user.full_name }}</span>
+                        <a href="{{ url_for('auth.logout') }}" class="nav-link logout-btn">Logout</a>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+                    <li><a href="{{ url_for('auth.login') }}" class="nav-link">Login</a></li>
+                    <li><a href="{{ url_for('auth.signup') }}" class="nav-link signup-btn">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alerts-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                        <button class="alert-close" onclick="this.parentElement.style.display='none';">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        {% block content %}
+        
+        {% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 AgriFleet. Built for farmers, by developers. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            <p>Need help? <a href="mailto:support@AgriFleet.com">Contact Support</a></p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

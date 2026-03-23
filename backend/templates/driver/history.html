@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings - AgriHaul{% endblock %}
+
+{% block content %}
+<div class="list-container">
+    <div class="list-header">
+        <h1>📋 My Bookings</h1>
+        <a href="{{ url_for('driver.available_bookings') }}" class="btn btn-primary">
+            🔍 Browse Available
+        </a>
+    </div>
+    
+    <!-- Filter Buttons -->
+    <div class="filter-buttons">
+        <a href="{{ url_for('driver.bookings') }}" 
+           class="filter-btn {% if not current_status %}active{% endif %}">
+            All
+        </a>
+        <a href="{{ url_for('driver.bookings', status='ACCEPTED') }}" 
+           class="filter-btn {% if current_status == 'ACCEPTED' %}active{% endif %}">
+            Active
+        </a>
+        <a href="{{ url_for('driver.bookings', status='COMPLETED') }}" 
+           class="filter-btn {% if current_status == 'COMPLETED' %}active{% endif %}">
+            Completed
+        </a>
+        <a href="{{ url_for('driver.bookings', status='CANCELLED') }}" 
+           class="filter-btn {% if current_status == 'CANCELLED' %}active{% endif %}">
+            Cancelled
+        </a>
+    </div>
+    
+    <!-- Bookings Table -->
+    {% if bookings %}
+        <div class="table-responsive">
+            <table class="bookings-table">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Goods</th>
+                        <th>Weight</th>
+                        <th>Fare</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                        <tr class="booking-row">
+                            <td class="cell-id">#{{ booking.id }}</td>
+                            <td>{{ booking.goods_type }}</td>
+                            <td>{{ booking.weight_kg }} kg</td>
+                            <td>
+                                {% if booking.final_fare %}
+                                    ₹{{ booking.final_fare }}
+                                {% else %}
+                                    ₹{{ booking.estimated_fare }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="status-badge status-{{ booking.status|lower }}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                            <td>{{ booking.created_at.strftime('%d/%m/%Y') }}</td>
+                            <td>
+                                <a href="{{ url_for('driver.booking_details', booking_id=booking.id) }}" 
+                                   class="link-btn">View Details</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h2>No Bookings Yet</h2>
+            <p>
+                {% if current_status %}
+                    You don't have any {{ current_status|lower }} bookings
+                {% else %}
+                    You haven't accepted any bookings yet
+                {% endif %}
+            </p>
+            <a href="{{ url_for('driver.available_bookings') }}" class="btn btn-primary">
+                Browse Available Bookings
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .booking-row:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .cell-id {
+        font-weight: bold;
+        color: #2196F3;
+    }
+    
+    .filter-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        background: white;
+        color: #333;
+    }
+    
+    .filter-btn:hover {
+        border-color: #2196F3;
+        color: #2196F3;
+    }
+    
+    .filter-btn.active {
+        background: #2196F3;
+        color: white;
+        border-color: #2196F3;
+    }
+</style>
+{% endblock %}

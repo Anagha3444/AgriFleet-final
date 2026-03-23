@@ -1,0 +1,493 @@
+/**
+ * Responsive Design for Mobile & Tablets
+ */
+
+/* ==================== Mobile: Up to 768px ====================*/
+
+@media (max-width: 768px) {
+    
+    /* Navigation */
+    .navbar-container {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 20px;
+        gap: 15px;
+    }
+    
+    .navbar-menu {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    /* Typography */
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.4em; }
+    h3 { font-size: 1.1em; }
+    
+    /* Hero Section */
+    .hero-section {
+        padding: 50px 20px;
+    }
+    
+    .hero-title {
+        font-size: 2em;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2em;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-lg {
+        width: 100%;
+    }
+    
+    /* Grid Layouts */
+    .stats-grid,
+    .features-grid,
+    .quick-actions,
+    .steps-container,
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Forms */
+    .auth-card {
+        padding: 30px 20px;
+        max-width: 100%;
+    }
+    
+    .form-container {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Tables */
+    .bookings-table {
+        font-size: 0.9em;
+    }
+    
+    .bookings-table th,
+    .bookings-table td {
+        padding: 10px 5px;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    /* Dashboard */
+    .dashboard-header {
+        margin-bottom: 20px;
+    }
+    
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stat-icon {
+        font-size: 2em;
+    }
+    
+    .stat-content h3 {
+        font-size: 1.4em;
+    }
+    
+    /* Alerts */
+    .alerts-container {
+        max-width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+    }
+    
+    /* Main Container */
+    .main-container {
+        padding: 20px 10px;
+    }
+    
+    /* Section Padding */
+    .container {
+        padding: 20px 15px;
+    }
+    
+    .auth-header {
+        margin-bottom: 20px;
+    }
+    
+    /* Cards & Shadows */
+    .booking-card {
+        padding: 15px;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+    
+    .how-it-works,
+    .cta-section {
+        padding: 30px 20px;
+    }
+    
+    /* Navigation Links */
+    .nav-user-menu {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nav-user-name {
+        display: block;
+    }
+    
+    /* Buttons in Tables */
+    .booking-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .booking-footer .btn {
+        width: 100%;
+    }
+    
+    /* List Header */
+    .list-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .list-header h1 {
+        text-align: left;
+    }
+    
+    /* Details */
+    .details-header {
+        flex-direction: column;
+    }
+    
+    .status-banner {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Form Container */
+    .form-card {
+        padding: 20px 15px;
+    }
+    
+    .info-card {
+        display: none;
+    }
+    
+    /* Actions */
+    .actions-section {
+        flex-direction: column;
+    }
+    
+    .actions-section .btn {
+        width: 100%;
+    }
+}
+
+/* ==================== Small Mobile: Up to 480px ====================*/
+
+@media (max-width: 480px) {
+    
+    body {
+        font-size: 14px;
+    }
+    
+    /* Navigation */
+    .navbar-brand {
+        font-size: 1.2em;
+    }
+    
+    .brand-icon {
+        font-size: 1.5em;
+    }
+    
+    .navbar-menu {
+        font-size: 0.9em;
+    }
+    
+    /* Typography */
+    h1 { font-size: 1.5em; }
+    h2 { font-size: 1.2em; }
+    h3 { font-size: 1em; }
+    
+    /* Hero */
+    .hero-section {
+        padding: 30px 15px;
+    }
+    
+    .hero-title {
+        font-size: 1.5em;
+    }
+    
+    .hero-subtitle {
+        font-size: 1em;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9em;
+    }
+    
+    .btn-lg {
+        padding: 12px 24px;
+        font-size: 1em;
+    }
+    
+    /* Forms */
+    .form-input {
+        padding: 10px;
+        font-size: 16px;
+    }
+    
+    .auth-card {
+        padding: 20px;
+    }
+    
+    /* Stats Card */
+    .stat-content h3 {
+        font-size: 1.2em;
+    }
+    
+    /* Tables */
+    .bookings-table {
+        font-size: 0.85em;
+    }
+    
+    .bookings-table th,
+    .bookings-table td {
+        padding: 8px 4px;
+    }
+    
+    /* Status Badge */
+    .status-badge {
+        padding: 4px 8px;
+        font-size: 0.75em;
+    }
+    
+    /* Empty State */
+    .empty-icon {
+        font-size: 2.5em;
+    }
+    
+    .empty-state {
+        padding: 40px 15px;
+    }
+    
+    /* Quick Actions */
+    .quick-actions {
+        gap: 10px;
+    }
+    
+    .action-button {
+        padding: 15px;
+    }
+    
+    /* Step Numbers */
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+    
+    /* Main Container */
+    .main-container {
+        padding: 15px 10px;
+    }
+    
+    /* Info Grid */
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Alerts */
+    .alert {
+        padding: 12px;
+        font-size: 0.9em;
+    }
+    
+    .alert-close {
+        font-size: 1.2em;
+    }
+    
+    /* Footer */
+    .footer {
+        padding: 20px 15px;
+    }
+    
+    /* Feature Icon */
+    .feature-icon {
+        font-size: 2em;
+    }
+    
+    /* Details Grid */
+    .details-grid {
+        gap: 15px;
+    }
+    
+    .detail-card {
+        padding: 15px;
+    }
+    
+    /* Booking Card */
+    .booking-card {
+        padding: 12px;
+    }
+    
+    .booking-header {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+    
+    .info-grid {
+        gap: 10px;
+    }
+}
+
+/* ==================== Tablet: 768px to 1024px ====================*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    
+    .main-container {
+        max-width: 90%;
+        padding: 30px 15px;
+    }
+    
+    .stats-grid,
+    .features-grid,
+    .quick-actions,
+    .steps-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .auth-card {
+        max-width: 450px;
+    }
+    
+    .hero-title {
+        font-size: 2.5em;
+    }
+    
+    .booking-footer {
+        flex-direction: row;
+    }
+    
+    .booking-footer .btn {
+        width: auto;
+    }
+    
+    .form-container {
+        grid-template-columns: 1fr 300px;
+    }
+}
+
+/* ==================== Large Desktop: 1400px+ ====================*/
+
+@media (min-width: 1400px) {
+    
+    .main-container {
+        max-width: 1300px;
+        padding: 50px 20px;
+    }
+    
+    .stats-grid,
+    .features-grid,
+    .quick-actions,
+    .steps-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ==================== Print Styles ====================*/
+
+@media print {
+    
+    .navbar,
+    .footer,
+    .btn,
+    .alerts-container {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .main-container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .bookings-table {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .bookings-table th {
+        background: #f0f0f0;
+        color: black;
+    }
+    
+    a {
+        text-decoration: underline;
+    }
+}
+
+/* ==================== Accessibility ====================*/
+
+@media (prefers-reduced-motion: reduce) {
+    
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    
+    :root {
+        --bg-light: #1a1a1a;
+        --text-dark: #e0e0e0;
+        --text-light: #b0b0b0;
+        --border-color: #333;
+    }
+    
+    body {
+        background: #121212;
+        color: var(--text-dark);
+    }
+    
+    .auth-card,
+    .container,
+    .feature-card,
+    .stat-card,
+    .booking-card,
+    .how-it-works,
+    .bookings-table,
+    .detail-card,
+    .info-card,
+    .form-card {
+        background: #1e1e1e;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .navbar {
+        background: #1e1e1e;
+    }
+    
+    .bookings-table thead {
+        background: #0d47a1;
+    }
+    
+    .booking-locations {
+        background: #2a2a2a;
+    }
+}
