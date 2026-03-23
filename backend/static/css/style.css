@@ -19,8 +19,8 @@
     --warning-color: #FFC107;
     --bg-light: #F5F5F5;
     --border-color: #DDD;
-    --text-dark: #2c3e50;
-    --text-light: #666;
+     --text-dark: #000;
+    --text-light: #333;
     --shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -973,3 +973,164 @@ small {
 .booking-form {
     margin-bottom: 20px;
 }
+/* ==================== BOOKING DETAILS PAGE ====================*/
+
+.details-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.details-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1976D2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+}
+
+.details-header h1 {
+    margin: 0;
+    color: white;
+    font-size: 2em;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.status-pending {
+    background: #FFC107;
+    color: white;
+}
+
+.status-accepted {
+    background: #FF9800;
+    color: white;
+}
+
+.status-completed {
+    background: #4CAF50;
+    color: white;
+}
+
+.details-section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid #2196F3;
+    color: #000 !important;
+}
+.details-section * {
+    color: #000 !important;
+}
+
+.details-section h3 {
+    margin: 0 0 20px 0;
+    color: #000 !important;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item .label {
+    font-weight: 600;
+    color: #333 !important;
+    min-width: 120px;
+}
+
+.info-item .value {
+    color: #000 !important;
+    font-weight: 500;
+}
+.location-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.location-item {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid var(--secondary-color);
+}
+
+.location-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.coordinates {
+    color: #666;
+    font-size: 0.95em;
+    font-family: 'Courier New', monospace;
+}
+
+/* Pricing Section */
+.pricing-section {
+    border-left-color: var(--accent-color);
+    background: #fff8f0;
+}
+
+.pricing-section h3 {
+    color: var(--accent-color);
+}
+
+.price-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    border: 2px solid var(--accent-color);
+}
+
+.price-label {
+    font-weight: 600;
+    color: #666;
+    font-size: 1.1em;
+}
+
+.price-amount {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    padding: 14px 20px;
+    font-size: 1em;
+}
+
+/* ==================== END BOOKING DETAILS ====================*/
